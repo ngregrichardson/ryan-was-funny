@@ -1,11 +1,8 @@
-import { Heart, MessageCircle, Repeat2, Search } from "lucide-react";
 import type { Route } from "./+types/_index";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import tweets from '../../data/tweets.json';
 import type { FullTweet } from "utils/types";
-import { format } from "date-fns";
 import Tweet from "components/tweet";
-import { useDebounce } from "@uidotdev/usehooks";
 import SearchBar from "components/searchBar";
 
 export function meta({}: Route.MetaArgs) {
