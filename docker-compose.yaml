@@ -5,6 +5,8 @@ services:
     image: ngregrichardson/ryan-was-funny
     container_name: ryan-was-funny
     restart: always
+    expose:
+      - 3000
     build:
       context: .
       dockerfile: Dockerfile
