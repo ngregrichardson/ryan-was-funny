@@ -22,7 +22,7 @@ export default function Tweet({ tweet} : { tweet: TweetType }) {
             const nextUrl = i + 1 < tweet.entities.urls.length ? tweet.entities.urls[i + 1] : null;
 
             if(url.expanded_url.endsWith('png') || url.expanded_url.endsWith('jpg')) {
-              media.push(<img src={url.expanded_url} className="w-full rounded-lg" />);
+              media.push(<img key={url.expanded_url} src={url.expanded_url} className="w-full rounded-lg" />);
             }
 
             portions.push({
@@ -87,7 +87,7 @@ export default function Tweet({ tweet} : { tweet: TweetType }) {
       .map(x => `/images/tweets/${tweet.id_str}-${x.media_url.split('/').pop()}`) || [];
 
       return [
-        ...images.map(image => <img src={image} className="w-full rounded-lg" />),
+        ...images.map(image => <img key={image} src={image} className="w-full rounded-lg" />),
         ...gifs.map(gif => <img key={gif.expanded_url} src={gif.expanded_url} className="w-full rounded-lg" />),
         ...videos.map(video => <video key={video} src={video} className="w-full rounded-lg" controls />),
         ...yt_videos.map(video => <iframe key={video} src={video} className="w-full rounded-lg aspect-video" />),

@@ -5,6 +5,8 @@ import tweets from '../../data/tweets.json';
 import type { FullTweet } from "utils/types";
 import { format } from "date-fns";
 import Tweet from "components/tweet";
+import { useDebounce } from "@uidotdev/usehooks";
+import SearchBar from "components/searchBar";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -22,21 +24,21 @@ export default function Index({
   loaderData,
 }: Route.ComponentProps) {
   const [filteredTweets, setFilteredTweets] = useState(loaderData);
-  const [searchKey, setSearchKey] = useState("");
 
-  useEffect(() => {
-    setFilteredTweets(loaderData.filter(tweet => tweet.full_text.toLowerCase().includes(searchKey.toLowerCase())));
-  }, [searchKey]);
+  const handleSearch = (searchKey: string) => {
+    setFilteredTweets(loaderData.filter(tweet =>
+      tweet.full_text.toLowerCase().includes(searchKey.toLowerCase()) ||
+      tweet.entities.media?.some(media => media.display_url.toLowerCase().includes(searchKey.toLowerCase()) || media.expanded_url.toLowerCase().includes(searchKey.toLowerCase())) ||
+      tweet.entities.urls?.some(url => url.display_url.toLowerCase().includes(searchKey.toLowerCase()) || url.expanded_url.toLowerCase().includes(searchKey.toLowerCase()))
+    ));
+  }
 
   return <div className="max-w-lg border-l border-r border-l-border border-r-border m-auto">
     <div className="px-3 py-4 border-b border-b-border">
       <h1>Tweets</h1>
     </div>
     <div className="px-3 py-4 border-b border-b-border">
-      <div className="bg-muted flex gap-2 rounded-full items-center border focus-within:border-accent focus-within:bg-white flex-row-reverse">
-        <input value={searchKey} onChange={e => setSearchKey(e.target.value)} type="text" placeholder="Search" className="peer bg-transparent border-none placeholder:text-muted-foreground h-10 flex-1 rounded-r-full outline-none caret-text text-text pr-3" />
-        <Search className="text-muted-foreground ml-3 peer-focus:text-accent w-4 h-4" />
-      </div>
+      <SearchBar onSearch={handleSearch} />
     </div>
     <div className="py-2">
       {filteredTweets.map(tweet => <Tweet key={tweet.id_str} tweet={tweet} />)}
