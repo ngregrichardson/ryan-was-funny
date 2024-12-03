@@ -1,0 +1,10 @@
+name: ryan-was-funny
+
+services:
+  ryan-was-funny:
+    image: ngregrichardson/ryan-was-funny
+    container_name: ryan-was-funny
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
