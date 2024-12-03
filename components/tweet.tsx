@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { Heart, MessageCircle, Repeat2 } from "lucide-react";
 import { useMemo } from "react";
 import type { Tweet as TweetType } from "utils/types";
+import ShareButton from "./shareButton";
 
 const replaceHtmlSymbols = (text: string) => text.replaceAll('&gt;', '>').replaceAll('&lt;', '<').replaceAll('&amp;', '&'); 
 const removeTwitterUrls = (text: string, tweet: TweetType) => {
@@ -95,7 +96,7 @@ export default function Tweet({ tweet} : { tweet: TweetType }) {
       ];
     }, [tweet]);
 
-    return <div className="border-b border-b-border px-3 py-2 text-text flex flex-col gap-2">
+    return <div id={tweet.id} className="border-b border-b-border px-3 py-2 text-text flex flex-col gap-2">
       <div className="flex gap-2">
         <img
           src={(new Date(tweet.created_at).getMonth() === 5 ? "/images/profile_gay.jpg" : "/images/profile.png")}
@@ -126,8 +127,9 @@ export default function Tweet({ tweet} : { tweet: TweetType }) {
         </div>
         <div className="flex gap-1 items-center">
             <Heart className="w-6 h-6 text-muted-foreground" />
-          <span className="text-muted-foreground font-semibold text-sm">{tweet.favorite_count}</span>
+            <span className="text-muted-foreground font-semibold text-sm">{tweet.favorite_count}</span>
         </div>
+        <ShareButton id={tweet.id} />
       </div>
   </div>
 }
